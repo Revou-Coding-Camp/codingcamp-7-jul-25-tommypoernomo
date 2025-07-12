@@ -43,9 +43,11 @@ function displayTasks() {
             <span style="font-weight: 500;">${element.task}</span>
             <span style="color: #888; margin-left: 10px; font-size: 0.95em;">(Due: ${element.dueDate})</span>
             </div>
+            <button class="complete-button" style="background: #4dff8bff; color: #fff; border: none; border-radius: 4px; padding: 4px 12px; cursor: pointer;" onclick="toggleTaskCompletion(${element.id})">${element.completed ? 'Undo' : 'Complete'}</button>
             <button class="delete-button" style="background: #ff4d4f; color: #fff; border: none; border-radius: 4px; padding: 4px 12px; cursor: pointer;" onclick="deleteTask('${element.task}')">Delete</button>
         </div>
         `;
+        console.log(element.completed);
         taskList.innerHTML += taskItem;
     });
 }
@@ -63,18 +65,57 @@ function deleteTask(id){
     }
 }
 
-function filterTasks() {
-    const filterInput = document.getElementById('filterInput').value.toLowerCase();
-    const taskList = document.getElementById('taskList');
-    const tasks = taskList.getElementsByTagName('li');
-
-    for (let i = 0; i < tasks.length; i++) {
-        const taskText = tasks[i].textContent.toLowerCase();
-        if (taskText.includes(filterInput)) {
-            tasks[i].style.display = '';
-        } else {
-            tasks[i].style.display = 'none';
-        }
+function toggleTaskCompletion(id){
+    const task=tasks.find(task =>task.id===id);
+    if(task){
+        task.completed=!task.completed;
+        console.log('completion for task',id,'status barunya',task.completed);
+        displayTasks();
     }
-}   
+}
 
+/* function filterTasks(){
+        const showCompleted = document.querySelector('button.bg-gray-200');
+        const showAll=document.querySelector('button.bg-green-200');
+
+        showCompleted.addEventListener('click',()=>{
+            const completedTasks=tasks.filter(tasks=>tasks.completed);
+            displayFilteredTasks(completedTasks);
+            console.log(completedTasks);
+        });
+
+        showAll.addEventListener('click', ()=>{
+            displayTasks(); 
+        });
+    } */
+    function showCompleted() {
+        const completedTasks = tasks.filter(task => task.completed);
+        displayFilteredTasks(completedTasks);
+    }
+
+    function showIncomplete() {
+        const incompleteTasks = tasks.filter(task => !task.completed);
+        displayFilteredTasks(incompleteTasks);
+    }
+
+    function showAll(){
+        displayFilteredTasks(tasks);
+    }
+
+    function displayFilteredTasks(filteredTasks) {
+        const taskList = document.getElementById('task-list-gue');
+        taskList.innerHTML = '';
+        filteredTasks.forEach(element => {
+            const taskItem = `
+            <div class="task-item" style="display: flex; align-items: center; justify-content: space-between; padding: 8px; margin-bottom: 6px; background: #f9f9f9; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <div>
+                <span style="font-weight: 500;">${element.task}</span>
+                <span style="color: #888; margin-left: 10px; font-size: 0.95em;">(Due: ${element.dueDate})</span>
+                </div>
+                <button class="complete-button" style="background: #4dff8bff; color: #fff; border: none; border-radius: 4px; padding: 4px 12px; cursor: pointer;" onclick="toggleTaskCompletion(${element.id})">${element.completed ? 'Undo' : 'Complete'}</button>
+                <button class="delete-button" style="background: #ff4d4f; color: #fff; border: none; border-radius: 4px; padding: 4px 12px; cursor: pointer;" onclick="deleteTask('${element.task}')">Delete</button>
+            </div>
+            `;
+            taskList.innerHTML += taskItem;
+        });
+    }
