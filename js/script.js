@@ -27,9 +27,9 @@ function addTask() {
 
         // Update the task list display
         displayTasks();
-        console.log('Task added:', newTask);
+        
     }
-    console.log('Adding task:', taskInput.value,'Due date:', duedateInput.value);
+    
 }
 
 function displayTasks() {
@@ -47,7 +47,7 @@ function displayTasks() {
             <button class="delete-button" style="background: #ff4d4f; color: #fff; border: none; border-radius: 4px; padding: 4px 12px; cursor: pointer;" onclick="deleteTask('${element.task}')">Delete</button>
         </div>
         `;
-        console.log(element.completed);
+   
         taskList.innerHTML += taskItem;
     });
 }
@@ -69,25 +69,11 @@ function toggleTaskCompletion(id){
     const task=tasks.find(task =>task.id===id);
     if(task){
         task.completed=!task.completed;
-        console.log('completion for task',id,'status barunya',task.completed);
+        
         displayTasks();
     }
 }
 
-/* function filterTasks(){
-        const showCompleted = document.querySelector('button.bg-gray-200');
-        const showAll=document.querySelector('button.bg-green-200');
-
-        showCompleted.addEventListener('click',()=>{
-            const completedTasks=tasks.filter(tasks=>tasks.completed);
-            displayFilteredTasks(completedTasks);
-            console.log(completedTasks);
-        });
-
-        showAll.addEventListener('click', ()=>{
-            displayTasks(); 
-        });
-    } */
     function showCompleted() {
         const completedTasks = tasks.filter(task => task.completed);
         displayFilteredTasks(completedTasks);
